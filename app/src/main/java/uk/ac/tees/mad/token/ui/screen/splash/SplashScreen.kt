@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,23 +24,33 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import kotlinx.coroutines.delay
 import uk.ac.tees.mad.token.R
-import uk.ac.tees.mad.token.ui.theme.TokenTheme
+import uk.ac.tees.mad.token.navigation.Screens
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(navController: NavController) {
     val infiniteTransition = rememberInfiniteTransition()
 
     val animatedRadius by infiniteTransition.animateFloat(
         initialValue = 50f,
         targetValue = 300f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1500, easing = LinearEasing),
+            animation = tween(durationMillis = 800, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
+
+    LaunchedEffect(Unit) {
+        delay(3000)
+        navController.navigate(Screens.AuthenticationScreen.route){
+            popUpTo(Screens.SplashScreen.route){
+                inclusive = true
+            }
+        }
+    }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -68,13 +80,5 @@ fun SplashScreen() {
                     )
                 }
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SplashPrev() {
-    TokenTheme {
-        SplashScreen()
     }
 }

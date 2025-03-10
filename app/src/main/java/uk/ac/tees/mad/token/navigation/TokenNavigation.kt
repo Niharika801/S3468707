@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import uk.ac.tees.mad.token.ui.screen.authentication.AuthenticationScreen
 import uk.ac.tees.mad.token.ui.screen.main.MainScreen
 import uk.ac.tees.mad.token.ui.screen.splash.SplashScreen
 
@@ -14,7 +15,11 @@ fun TokenNavigation(){
     NavHost(navController = navController, startDestination = Screens.SplashScreen.route) {
 
         composable(Screens.SplashScreen.route) {
-            SplashScreen()
+            SplashScreen(navController)
+        }
+
+        composable(Screens.AuthenticationScreen.route){
+            AuthenticationScreen(navController)
         }
 
         composable(Screens.MainScreen.route) {
