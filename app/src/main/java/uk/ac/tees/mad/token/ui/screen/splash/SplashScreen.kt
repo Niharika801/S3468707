@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import uk.ac.tees.mad.token.R
 import uk.ac.tees.mad.token.navigation.Screens
@@ -43,9 +44,11 @@ fun SplashScreen(navController: NavController) {
         )
     )
 
+    val auth = FirebaseAuth.getInstance()
     LaunchedEffect(Unit) {
         delay(3000)
-        navController.navigate(Screens.AuthenticationScreen.route){
+        navController.navigate(if(auth.currentUser!=null) Screens.MainScreen.route
+        else Screens.AuthenticationScreen.route){
             popUpTo(Screens.SplashScreen.route){
                 inclusive = true
             }

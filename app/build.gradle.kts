@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -57,6 +58,10 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.51.1")
     // Hilt for ViewModel
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    // firebase auth
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-auth")
 
     implementation("androidx.navigation:navigation-compose:2.8.7")
 
