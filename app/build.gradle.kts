@@ -44,6 +44,7 @@ android {
 
 dependencies {
 
+    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -64,6 +65,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
     implementation("androidx.navigation:navigation-compose:2.8.7")
+
+    // Biometric auth
+    implementation("androidx.biometric:biometric:1.4.0-alpha02")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

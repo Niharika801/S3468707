@@ -15,7 +15,7 @@ fun TokenNavigation(){
     NavHost(navController = navController, startDestination = Screens.SplashScreen.route) {
 
         composable(Screens.SplashScreen.route) {
-            SplashScreen(navController)
+            SplashScreen(navController = navController)
         }
 
         composable(Screens.AuthenticationScreen.route){
