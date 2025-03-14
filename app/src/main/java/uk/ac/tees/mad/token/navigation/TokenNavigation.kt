@@ -23,7 +23,7 @@ fun TokenNavigation(){
         }
 
         composable(Screens.MainScreen.route) {
-            MainScreen()
+            MainScreen(navController)
         }
     }
 }
