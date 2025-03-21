@@ -30,14 +30,17 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.delay
 import uk.ac.tees.mad.token.R
 import uk.ac.tees.mad.token.navigation.Screens
+import uk.ac.tees.mad.token.ui.screen.home.HomeViewModel
 
 @Composable
 fun SplashScreen(
+    homeViewModel: HomeViewModel,
     viewModel: SplashViewModel = hiltViewModel(),
     navController: NavController) {
+
+    val cryptoList by homeViewModel.cryptoList.collectAsState()
 
     val authSuccess by viewModel.authSuccess.collectAsState()
     val authError by viewModel.authError.collectAsState()
@@ -56,14 +59,13 @@ fun SplashScreen(
 
     val auth = FirebaseAuth.getInstance()
     LaunchedEffect(Unit) {
-        delay(3000)
         activity?.let {
             viewModel.authenticate(it)
         }
     }
 
-    LaunchedEffect(authSuccess) {
-        if (authSuccess){
+    LaunchedEffect(authSuccess, cryptoList.isNotEmpty()) {
+        if (authSuccess && cryptoList.isNotEmpty()){
             navController.navigate(if(auth.currentUser!=null) Screens.MainScreen.route
             else Screens.AuthenticationScreen.route){
                 popUpTo(Screens.SplashScreen.route){

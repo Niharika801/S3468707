@@ -11,10 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import uk.ac.tees.mad.token.ui.screen.favorite.FavoriteScreen
 import uk.ac.tees.mad.token.ui.screen.home.HomeScreen
+import uk.ac.tees.mad.token.ui.screen.home.HomeViewModel
 import uk.ac.tees.mad.token.ui.screen.profile.ProfileScreen
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(
+    navController: NavController,
+    homeViewModel: HomeViewModel
+    ) {
     var selectedScreen by rememberSaveable { mutableStateOf(0) }
 
     Scaffold(
@@ -24,7 +28,7 @@ fun MainScreen(navController: NavController) {
         )}
     ) { paddingValues->
         when(selectedScreen){
-            0-> HomeScreen(modifier = Modifier.padding(paddingValues))
+            0-> HomeScreen(modifier = Modifier.padding(paddingValues), homeViewModel)
             1-> FavoriteScreen(modifier = Modifier.padding(paddingValues))
             2-> ProfileScreen(navController = navController, modifier = Modifier.padding(paddingValues))
         }

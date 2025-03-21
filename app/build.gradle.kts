@@ -68,6 +68,11 @@ dependencies {
 
     // Biometric auth
     implementation("androidx.biometric:biometric:1.4.0-alpha02")
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // coil for image loading
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
