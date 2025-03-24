@@ -11,6 +11,6 @@ interface CryptoApiService {
         @Query("order") order: String = "market_cap_desc",
         @Query("per_page") perPage: Int = 20,
         @Query("page") page: Int = 1,
-        @Query("sparkline") sparkline: Boolean = true
+        @Query("sparkline") sparkline: Boolean = false
     ): List<TokenData>
 }
