@@ -13,11 +13,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import uk.ac.tees.mad.token.navigation.Screens
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    navController: NavController
 ) {
     val cryptoList by viewModel.cryptoList.collectAsState()
     Column(
@@ -31,7 +34,11 @@ fun HomeScreen(
         )
         LazyColumn {
             items(cryptoList){ token->
-                TokenCard(token)
+                TokenCard(token,
+                    onClick = {
+                        navController.navigate(Screens.DetailScreen.route+ "/${token.id}")
+                    }
+                )
             }
         }
     }

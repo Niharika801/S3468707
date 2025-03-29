@@ -24,7 +24,6 @@ class HomeViewModel @Inject constructor(
     val error = _error.asStateFlow()
 
     init {
-        Log.e("Init HomeViewModel", "HomeViewModel Initialised")
         fetchCryptoData()
     }
 
@@ -32,7 +31,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _cryptoList.value = repository.getTokenData()
-                Log.e("CryptoList Size", "Size:${_cryptoList.value.size}")
             } catch (e: Exception) {
                 _error.value = "Error fetching data: ${e.message}"
             }

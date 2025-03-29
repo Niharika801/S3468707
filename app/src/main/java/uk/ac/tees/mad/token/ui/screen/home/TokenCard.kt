@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.token.ui.screen.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,7 @@ import uk.ac.tees.mad.token.data.model.TokenData
 @Composable
 fun TokenCard(
     tokenData: TokenData,
+    onClick:()->Unit,
     modifier: Modifier = Modifier) {
     Box(modifier = modifier
         .padding(16.dp)
@@ -33,6 +35,9 @@ fun TokenCard(
 
         Card(
             modifier = Modifier.fillMaxWidth()
+                .clickable {
+                    onClick()
+                }
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

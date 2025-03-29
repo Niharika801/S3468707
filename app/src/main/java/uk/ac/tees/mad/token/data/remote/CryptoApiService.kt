@@ -1,7 +1,9 @@
 package uk.ac.tees.mad.token.data.remote
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
+import uk.ac.tees.mad.token.data.model.DetailData
 import uk.ac.tees.mad.token.data.model.TokenData
 
 interface CryptoApiService {
@@ -13,4 +15,12 @@ interface CryptoApiService {
         @Query("page") page: Int = 1,
         @Query("sparkline") sparkline: Boolean = false
     ): List<TokenData>
+
+    @GET("coins/{id}")
+    suspend fun getCryptoDetails(
+        @Path("id") id: String,
+        @Query("localization") localization: Boolean = false,
+        @Query("sparkline") sparkline: Boolean = true,
+        @Query("vs_currency") currency: String = "usd"
+    ): DetailData
 }

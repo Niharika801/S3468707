@@ -28,7 +28,7 @@ fun MainScreen(
         )}
     ) { paddingValues->
         when(selectedScreen){
-            0-> HomeScreen(modifier = Modifier.padding(paddingValues), homeViewModel)
+            0-> HomeScreen(modifier = Modifier.padding(paddingValues), viewModel = homeViewModel, navController = navController)
             1-> FavoriteScreen(modifier = Modifier.padding(paddingValues))
             2-> ProfileScreen(navController = navController, modifier = Modifier.padding(paddingValues))
         }
