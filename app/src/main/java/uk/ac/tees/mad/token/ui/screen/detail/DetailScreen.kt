@@ -88,11 +88,11 @@ fun DetailScreen(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Market Cap: ${crypto!!.market_data.market_cap[selectedCurrency]?.let { cap -> "$cap $selectedCurrency".uppercase() }}",
+                        text = "Market Cap: ${crypto!!.market_data.market_cap[selectedCurrency]?.let { cap -> "${cap/1_000_000}M $selectedCurrency"}}",
                         color = Color(0xFFB0BEC5)
                     )
                     Text(
-                        text = "24h Change: ${crypto!!.market_data.price_change_percentage_24h}%",
+                        text = "24h Change: ${"%.3f".format(crypto!!.market_data.price_change_percentage_24h)}%",
                         color = if (crypto!!.market_data.price_change_percentage_24h >= 0) Color.Green else Color.Red
                     )
                     Spacer(modifier = Modifier.height(16.dp))
