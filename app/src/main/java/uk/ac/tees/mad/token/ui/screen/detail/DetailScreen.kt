@@ -32,6 +32,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import uk.ac.tees.mad.token.R
+import uk.ac.tees.mad.token.presentation.components.ShimmerCryptoDescriptionCard
+import uk.ac.tees.mad.token.presentation.components.ShimmerCryptoDetailCard
 
 @Composable
 fun DetailScreen(
@@ -72,7 +74,7 @@ fun DetailScreen(
                         contentDescription = "TokenIcon",
                         placeholder = painterResource(R.drawable.splash_icon),
                         error = painterResource(R.drawable.splash_icon),
-                        modifier = Modifier.size(100.dp)
+                        modifier = Modifier.size(150.dp)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -88,7 +90,7 @@ fun DetailScreen(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Market Cap: ${crypto!!.market_data.market_cap[selectedCurrency]?.let { cap -> "${cap/1_000_000}M $selectedCurrency"}}",
+                        text = "Market Cap: ${crypto!!.market_data.market_cap[selectedCurrency]?.let { cap -> "${cap/1_000_000}M $selectedCurrency".uppercase()}}",
                         color = Color(0xFFB0BEC5)
                     )
                     Text(
@@ -115,6 +117,10 @@ fun DetailScreen(
                     Text(text = crypto!!.description.en, maxLines = 5, overflow = TextOverflow.Ellipsis, color = Color.Gray)
                 }
             }
+        }else{
+            ShimmerCryptoDetailCard()
+            Spacer(modifier = Modifier.height(16.dp))
+            ShimmerCryptoDescriptionCard()
         }
 
     }

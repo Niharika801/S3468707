@@ -23,7 +23,6 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _tokenDetail.value = repository.getTokenDetails(id)
-                Log.e("Detail log","${_tokenDetail.value!!.description}")
             }catch (e:Exception){
                 Log.e("Error in getting detail data", e.message.toString())
             }

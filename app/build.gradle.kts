@@ -56,6 +56,7 @@ dependencies {
 
     // dagger hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
+    implementation(libs.androidx.compose.material3)
     kapt("com.google.dagger:hilt-compiler:2.51.1")
     // Hilt for ViewModel
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
@@ -75,6 +76,8 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
     // Chart display
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.30.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
