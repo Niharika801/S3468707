@@ -76,7 +76,12 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
     // Chart display
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    // room db
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 
+    // for shimmer effect
     implementation("com.google.accompanist:accompanist-placeholder-material:0.30.1")
 
     testImplementation(libs.junit)

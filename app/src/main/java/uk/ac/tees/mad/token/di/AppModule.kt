@@ -1,13 +1,16 @@
 package uk.ac.tees.mad.token.di
 
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import uk.ac.tees.mad.token.data.model.TokenData
+import uk.ac.tees.mad.token.data.local.FavoriteTokenDao
+import uk.ac.tees.mad.token.data.local.TokenDatabase
 import uk.ac.tees.mad.token.data.remote.CryptoApiService
 import uk.ac.tees.mad.token.data.repository.Repository
 import uk.ac.tees.mad.token.data.repository.RepositoryImp
@@ -43,7 +46,22 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(api:CryptoApiService):Repository{
-        return RepositoryImp(api)
+    fun provideDatabase(@ApplicationContext context: Context):TokenDatabase{
+        return TokenDatabase.getDatabase(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteTokenDao(database:TokenDatabase):FavoriteTokenDao{
+        return database.favoriteTokenDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepository(
+        api: CryptoApiService,
+        favoriteTokenDao: FavoriteTokenDao
+    ): Repository {
+        return RepositoryImp(api, favoriteTokenDao)
     }
 }
