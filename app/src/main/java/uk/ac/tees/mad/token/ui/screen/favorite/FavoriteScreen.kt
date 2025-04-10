@@ -1,32 +1,32 @@
 package uk.ac.tees.mad.token.ui.screen.favorite
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import uk.ac.tees.mad.token.data.model.TokenData
-import uk.ac.tees.mad.token.ui.theme.TokenTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import uk.ac.tees.mad.token.navigation.Screens
 
 @Composable
-fun FavoriteScreen(modifier: Modifier = Modifier) {
-    val token = TokenData(
-        id = "bitcoin",
-        name = "Bitcoin",
-        symbol = "BTC",
-        image = "dd",
-        currentPrice = 12345.1,
-        priceChange = 1.23343,
-        marketCap = 123456789077,
-        volume = 12345678765
-    )
+fun FavoriteScreen(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    viewModel: FavoriteViewModel = hiltViewModel()
+    ) {
+    val favoriteDataList by viewModel.favoriteDataList.collectAsState()
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
     ) {
@@ -37,22 +37,14 @@ fun FavoriteScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(16.dp)
         )
         LazyColumn {
-            items(7){
+            items(favoriteDataList){ item->
                 FavoriteTokenCard(
-                    token,
-                    onClick = {},
-                    onDelete = {},
-                    onReload = {},
+                    item,
+                    onClick = {navController.navigate(Screens.DetailScreen.route+ "/${item.id}")},
+                    onDelete = {viewModel.deleteFavorite(item,context)},
+                    onReload = {viewModel.updateFavorite(item,context)},
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun FavScreenPrev() {
-    TokenTheme {
-        FavoriteScreen()
     }
 }

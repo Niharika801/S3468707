@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ fun HomeScreen(
     navController: NavController
 ) {
     val cryptoList by viewModel.cryptoList.collectAsState()
+    val context = LocalContext.current
     Column(
         modifier = modifier
     ) {
@@ -37,6 +39,9 @@ fun HomeScreen(
                 TokenCard(token,
                     onClick = {
                         navController.navigate(Screens.DetailScreen.route+ "/${token.id}")
+                    },
+                    onFavoriteClick = {
+                        viewModel.addToFavorite(token, context)
                     }
                 )
             }

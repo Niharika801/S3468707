@@ -26,6 +26,10 @@ class RepositoryImp @Inject constructor(
         dao.addFavoriteData(entity)
     }
 
+    override suspend fun updateFavoriteData(entity: FavoriteEntity) {
+        dao.updateFavoriteData(entity)
+    }
+
     override fun getFavoriteTokens(userId: String): Flow<List<FavoriteEntity>> {
         return dao.getFavoriteTokens(userId)
     }

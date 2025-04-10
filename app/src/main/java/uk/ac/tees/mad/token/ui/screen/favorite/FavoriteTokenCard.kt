@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import uk.ac.tees.mad.token.R
-import uk.ac.tees.mad.token.data.model.TokenData
+import uk.ac.tees.mad.token.data.local.FavoriteEntity
 import uk.ac.tees.mad.token.ui.screen.home.DoubleTextRow
 
 @Composable
 fun FavoriteTokenCard(
-    tokenData: TokenData,
+    tokenData: FavoriteEntity,
     onClick:()->Unit,
     onDelete:()->Unit,
     onReload:()->Unit,

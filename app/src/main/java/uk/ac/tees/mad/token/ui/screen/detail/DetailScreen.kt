@@ -90,7 +90,11 @@ fun DetailScreen(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Market Cap: ${crypto!!.market_data.market_cap[selectedCurrency]?.let { cap -> "${cap/1_000_000}M $selectedCurrency".uppercase()}}",
+                        text = "Market Cap: ${crypto!!.market_data.market_cap[selectedCurrency]?.let { cap -> "$cap $selectedCurrency".uppercase()}}",
+                        color = Color(0xFFB0BEC5)
+                    )
+                    Text(
+                        text = "Volume: ${crypto!!.market_data.total_volume[selectedCurrency]?.let { cap -> "$cap $selectedCurrency".uppercase()}}",
                         color = Color(0xFFB0BEC5)
                     )
                     Text(

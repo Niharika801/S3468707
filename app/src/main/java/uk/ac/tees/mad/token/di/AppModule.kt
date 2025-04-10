@@ -27,11 +27,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseAuth():FirebaseAuth = FirebaseAuth.getInstance()
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit{
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.coingecko.com/api/v3/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -40,19 +40,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCryptoApiService(retrofit: Retrofit):CryptoApiService{
+    fun provideCryptoApiService(retrofit: Retrofit): CryptoApiService {
         return retrofit.create(CryptoApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context):TokenDatabase{
+    fun provideDatabase(@ApplicationContext context: Context): TokenDatabase {
         return TokenDatabase.getDatabase(context)
     }
 
     @Provides
     @Singleton
-    fun provideFavoriteTokenDao(database:TokenDatabase):FavoriteTokenDao{
+    fun provideFavoriteTokenDao(database: TokenDatabase): FavoriteTokenDao {
         return database.favoriteTokenDao()
     }
 

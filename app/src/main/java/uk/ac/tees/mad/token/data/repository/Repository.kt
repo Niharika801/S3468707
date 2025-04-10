@@ -9,6 +9,7 @@ interface Repository {
     suspend fun getTokenData():List<TokenData>
     suspend fun getTokenDetails(id:String):DetailData
     suspend fun addFavoriteData(entity: FavoriteEntity)
+    suspend fun updateFavoriteData(entity: FavoriteEntity)
     fun getFavoriteTokens(userId:String): Flow<List<FavoriteEntity>>
     suspend fun deleteFavoriteData(entity: FavoriteEntity)
 }
