@@ -6,28 +6,34 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
 import uk.ac.tees.mad.token.R
+import uk.ac.tees.mad.token.navigation.Screens
 
 @Composable
 fun ProfileScreen(
+    viewModel: ProfileViewModel = hiltViewModel(),
     navController: NavController,
     modifier: Modifier = Modifier) {
+    val name by viewModel.name.collectAsState()
+    val email by viewModel.email.collectAsState()
     var isDark by remember { mutableStateOf(false) }
     var isFingerLock by remember { mutableStateOf(false) }
     var currentCurrency by remember { mutableStateOf("usd") }
     var showEditNameSheet by remember { mutableStateOf(false) }
-    val auth = FirebaseAuth.getInstance()
+    val context = LocalContext.current
     Column(
         modifier = modifier
     ) {
@@ -39,7 +45,7 @@ fun ProfileScreen(
             modifier = Modifier.padding(16.dp)
         )
 
-        ProfileSection("Test Name", "test@gmail.com") {
+        ProfileSection(name, email) {
             showEditNameSheet = true
         }
 
@@ -65,15 +71,23 @@ fun ProfileScreen(
         SettingsOption(
             icon = Icons.AutoMirrored.Filled.ExitToApp,
             title = "Log Out",
-            onClick ={}
+            onClick ={
+                viewModel.logOut()
+                navController.navigate(Screens.AuthenticationScreen.route){
+                    popUpTo(Screens.MainScreen.route){
+                        inclusive = true
+                    }
+                }
+            }
         )
 
     }
 
     if (showEditNameSheet) {
         EditNameBottomSheet(
-            currentName = "My Name",
+            currentName = name,
             onSave = { newName ->
+                viewModel.updateProfile(newName,context)
                 showEditNameSheet = false
             },
             onDismiss = { showEditNameSheet = false }
