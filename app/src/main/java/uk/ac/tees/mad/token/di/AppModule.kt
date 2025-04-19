@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.token.di
 
 import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -17,6 +18,8 @@ import uk.ac.tees.mad.token.data.repository.RepositoryImp
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import javax.inject.Singleton
+
+private val Context.dataStore by preferencesDataStore(name = "app_preferences")
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -64,4 +67,8 @@ object AppModule {
     ): Repository {
         return RepositoryImp(api, favoriteTokenDao)
     }
+
+    @Provides
+    @Singleton
+    fun provideDataStore(@ApplicationContext context: Context) = context.dataStore
 }

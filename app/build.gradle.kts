@@ -84,6 +84,9 @@ dependencies {
     // for shimmer effect
     implementation("com.google.accompanist:accompanist-placeholder-material:0.30.1")
 
+    // dataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
