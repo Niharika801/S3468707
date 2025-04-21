@@ -24,14 +24,15 @@ import uk.ac.tees.mad.token.navigation.Screens
 
 @Composable
 fun ProfileScreen(
+    modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
     navController: NavController,
-    modifier: Modifier = Modifier) {
+    ) {
     val name by viewModel.name.collectAsState()
     val email by viewModel.email.collectAsState()
-    var isDark by remember { mutableStateOf(false) }
-    var isFingerLock by remember { mutableStateOf(false) }
-    var currentCurrency by remember { mutableStateOf("usd") }
+    val isDarkMode by viewModel.isDarkMode.collectAsState()
+    val isFingerLock by viewModel.isFingerprintLock.collectAsState()
+    val selectedCurrency by viewModel.selectedCurrency.collectAsState()
     var showEditNameSheet by remember { mutableStateOf(false) }
     val context = LocalContext.current
     Column(
@@ -52,20 +53,20 @@ fun ProfileScreen(
         SettingToggleButton(
             title = "Dark Mode",
             drawable = R.drawable.baseline_dark_mode_24,
-            isValue = isDark,
-            onToggle = {isDark = !isDark}
+            isValue = isDarkMode,
+            onToggle = {viewModel.saveDarkModeStatus(it)}
         )
 
         SettingToggleButton(
             title = "Fingerprint Lock",
             drawable = R.drawable.baseline_fingerprint_24,
             isValue = isFingerLock,
-            onToggle = {isFingerLock = !isFingerLock}
+            onToggle = {viewModel.saveFingerLockStatus(it)}
         )
         
         CurrencySelector(
-            currentCurrency = currentCurrency,
-            onCurrencyChange = {currentCurrency = it}
+            currentCurrency = selectedCurrency,
+            onCurrencyChange = {viewModel.saveSelectedCurrency(it)}
         )
         
         SettingsOption(

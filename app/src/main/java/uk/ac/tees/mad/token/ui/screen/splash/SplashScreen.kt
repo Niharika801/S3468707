@@ -45,6 +45,8 @@ fun SplashScreen(
     val authSuccess by viewModel.authSuccess.collectAsState()
     val authError by viewModel.authError.collectAsState()
 
+    val isFingerLock by viewModel.isFingerprintLock.collectAsState()
+
     val infiniteTransition = rememberInfiniteTransition()
     val activity = LocalActivity.current as? FragmentActivity
 
@@ -58,9 +60,11 @@ fun SplashScreen(
     )
 
     val auth = FirebaseAuth.getInstance()
-    LaunchedEffect(Unit) {
-        activity?.let {
-            viewModel.authenticate(it)
+    LaunchedEffect(isFingerLock) {
+        if (isFingerLock) {
+            activity?.let {
+                viewModel.authenticate(it)
+            }
         }
     }
 

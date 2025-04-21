@@ -29,7 +29,7 @@ fun SettingToggleButton(
     title:String,
     drawable:Int,
     isValue: Boolean,
-    onToggle: () -> Unit
+    onToggle: (Boolean) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -59,7 +59,7 @@ fun SettingToggleButton(
             }
             Switch(
                 checked = isValue,
-                onCheckedChange = { onToggle() }
+                onCheckedChange = { onToggle(it) }
             )
         }
     }

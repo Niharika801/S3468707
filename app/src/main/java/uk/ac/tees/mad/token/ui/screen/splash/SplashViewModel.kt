@@ -5,14 +5,18 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import uk.ac.tees.mad.token.data.DataStoreManager
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
+    private val dataStoreManager: DataStoreManager,
     private val executor: Executor
 ):ViewModel() {
 
@@ -24,6 +28,22 @@ class SplashViewModel @Inject constructor(
 
     private val _authError = MutableStateFlow(false)
     val authError:StateFlow<Boolean> get() = _authError
+
+    private val _isFingerprintLock = MutableStateFlow(false)
+    val isFingerprintLock:StateFlow<Boolean> get() = _isFingerprintLock
+
+    init {
+        viewModelScope.launch {
+            viewModelScope.launch {
+                dataStoreManager.isFingerprintLockFlow.collect{
+                    _isFingerprintLock.value = it
+                    if (!it){
+                        _authSuccess.value = true
+                    }
+                }
+            }
+        }
+    }
 
     fun authenticate(activity: FragmentActivity) {
         val biometricPrompt = BiometricPrompt(activity, executor, object : BiometricPrompt.AuthenticationCallback() {

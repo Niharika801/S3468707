@@ -10,10 +10,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import uk.ac.tees.mad.token.data.DataStoreManager
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
+    private val dataStoreManager: DataStoreManager,
     private val auth: FirebaseAuth
 ):ViewModel() {
 
@@ -22,9 +24,28 @@ class ProfileViewModel @Inject constructor(
     private val _email = MutableStateFlow("Email")
     val email: StateFlow<String> get() = _email
 
+    private val _isDarkMode = MutableStateFlow(false)
+    val isDarkMode:StateFlow<Boolean> get() = _isDarkMode
+
+    private val _isFingerprintLock = MutableStateFlow(false)
+    val isFingerprintLock:StateFlow<Boolean> get() = _isFingerprintLock
+
+    private val _selectedCurrency = MutableStateFlow("usd")
+    val selectedCurrency:StateFlow<String> get() = _selectedCurrency
+
     init {
         _name.value = auth.currentUser?.displayName.toString()
         _email.value = auth.currentUser?.email.toString()
+
+        viewModelScope.launch {
+            dataStoreManager.isDarkModeFlow.collect{_isDarkMode.value = it}
+        }
+        viewModelScope.launch {
+            dataStoreManager.isFingerprintLockFlow.collect{_isFingerprintLock.value = it}
+        }
+        viewModelScope.launch {
+            dataStoreManager.selectedCurrencyFlow.collect{_selectedCurrency.value = it}
+        }
     }
 
     fun updateProfile(newName:String, context: Context){
@@ -35,6 +56,27 @@ class ProfileViewModel @Inject constructor(
                 .build()
             auth.currentUser?.updateProfile(profileUpdate)
             Toast.makeText(context, "Name changed successfully", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun saveDarkModeStatus(value:Boolean){
+        viewModelScope.launch {
+            dataStoreManager.saveDarkModeStatus(value)
+            _isDarkMode.value = value
+        }
+    }
+
+    fun saveFingerLockStatus(value:Boolean){
+        viewModelScope.launch {
+            dataStoreManager.saveFingerprintLockStatus(value)
+            _isFingerprintLock.value = value
+        }
+    }
+
+    fun saveSelectedCurrency(newCurrency:String){
+        viewModelScope.launch {
+            dataStoreManager.saveSelectedCurrency(newCurrency)
+            _selectedCurrency.value = newCurrency
         }
     }
 
