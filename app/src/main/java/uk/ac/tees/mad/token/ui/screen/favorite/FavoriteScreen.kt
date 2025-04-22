@@ -25,6 +25,7 @@ fun FavoriteScreen(
     viewModel: FavoriteViewModel = hiltViewModel()
     ) {
     val favoriteDataList by viewModel.favoriteDataList.collectAsState()
+    val selectedCurrency by viewModel.selectedCurrency.collectAsState()
     val context = LocalContext.current
 
     Column(
@@ -39,7 +40,7 @@ fun FavoriteScreen(
         LazyColumn {
             items(favoriteDataList){ item->
                 FavoriteTokenCard(
-                    item,
+                    item, selectedCurrency,
                     onClick = {navController.navigate(Screens.DetailScreen.route+ "/${item.id}")},
                     onDelete = {viewModel.deleteFavorite(item,context)},
                     onReload = {viewModel.updateFavorite(item,context)},

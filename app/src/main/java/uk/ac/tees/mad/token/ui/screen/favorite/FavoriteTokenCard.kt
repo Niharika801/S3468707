@@ -30,6 +30,7 @@ import uk.ac.tees.mad.token.ui.screen.home.DoubleTextRow
 @Composable
 fun FavoriteTokenCard(
     tokenData: FavoriteEntity,
+    currency:String,
     onClick:()->Unit,
     onDelete:()->Unit,
     onReload:()->Unit,
@@ -87,7 +88,7 @@ fun FavoriteTokenCard(
                         )
                         HorizontalDivider()
                         Text(
-                            text = "$${tokenData.currentPrice}",
+                            text = "${tokenData.currentPrice} ${currency.uppercase()}",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF008000),
@@ -95,8 +96,8 @@ fun FavoriteTokenCard(
                         )
                         val color:Color = if(tokenData.priceChange>=0) Color.Green else Color.Red
                         DoubleTextRow("24h Change", "${"%.2f".format(tokenData.priceChange)}%", color)
-                        DoubleTextRow("Market Cap", "$${tokenData.marketCap / 1_000_000}M")
-                        DoubleTextRow("Volume", "$${tokenData.volume / 1_000_000}M")
+                        DoubleTextRow("Market Cap", "${tokenData.marketCap / 1_000_000_000}B ${currency.uppercase()}")
+                        DoubleTextRow("Volume", "${tokenData.volume / 1_000_000}M ${currency.uppercase()}")
                     }
                 }
 

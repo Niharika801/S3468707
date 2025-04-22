@@ -6,8 +6,8 @@ import uk.ac.tees.mad.token.data.model.DetailData
 import uk.ac.tees.mad.token.data.model.TokenData
 
 interface Repository {
-    suspend fun getTokenData():List<TokenData>
-    suspend fun getTokenDetails(id:String):DetailData
+    suspend fun getTokenData(currency:String):List<TokenData>
+    suspend fun getTokenDetails(id:String, currency:String):DetailData
     suspend fun addFavoriteData(entity: FavoriteEntity)
     suspend fun updateFavoriteData(entity: FavoriteEntity)
     fun getFavoriteTokens(userId:String): Flow<List<FavoriteEntity>>

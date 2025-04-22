@@ -12,13 +12,14 @@ class RepositoryImp @Inject constructor(
     private val api:CryptoApiService,
     private val dao:FavoriteTokenDao
 ) :Repository{
-    override suspend fun getTokenData(): List<TokenData> {
-        return api.getCryptoData()
+    override suspend fun getTokenData(currency:String): List<TokenData> {
+        return api.getCryptoData(currency = currency)
     }
 
-    override suspend fun getTokenDetails(id:String): DetailData {
+    override suspend fun getTokenDetails(id:String, currency: String): DetailData {
         return api.getCryptoDetails(
-            id = id
+            id = id,
+            currency = currency
         )
     }
 

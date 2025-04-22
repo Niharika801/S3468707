@@ -9,7 +9,7 @@ import uk.ac.tees.mad.token.data.model.TokenData
 interface CryptoApiService {
     @GET("coins/markets")
     suspend fun getCryptoData(
-        @Query("vs_currency") currency: String = "usd",
+        @Query("vs_currency") currency: String,
         @Query("order") order: String = "market_cap_desc",
         @Query("per_page") perPage: Int = 20,
         @Query("page") page: Int = 1,
@@ -21,6 +21,6 @@ interface CryptoApiService {
         @Path("id") id: String,
         @Query("localization") localization: Boolean = false,
         @Query("sparkline") sparkline: Boolean = true,
-        @Query("vs_currency") currency: String = "usd"
+        @Query("vs_currency") currency:String
     ): DetailData
 }

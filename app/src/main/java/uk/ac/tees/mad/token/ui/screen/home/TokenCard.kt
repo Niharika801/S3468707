@@ -34,6 +34,7 @@ import uk.ac.tees.mad.token.data.model.TokenData
 @Composable
 fun TokenCard(
     tokenData: TokenData,
+    currency:String,
     onClick:()->Unit,
     onFavoriteClick:()->Unit,
     modifier: Modifier = Modifier) {
@@ -89,20 +90,21 @@ fun TokenCard(
                         )
                         HorizontalDivider()
                         Text(
-                            text = "$${tokenData.currentPrice}",
+                            text = "${tokenData.currentPrice} ${currency.uppercase()}",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF008000),
                             modifier = Modifier.padding(top = 6.dp)
                         )
                         DoubleTextRow("24h Change", "${"%.2f".format(tokenData.priceChange)}%")
-                        DoubleTextRow("Market Cap", "$${tokenData.marketCap / 1_000_000}M")
-                        DoubleTextRow("Volume", "$${tokenData.volume / 1_000_000}M")
+                        DoubleTextRow("Market Cap", "${tokenData.marketCap / 1_000_000_00}B ${currency.uppercase()}")
+                        DoubleTextRow("Volume", "${tokenData.volume / 1_000_000}M ${currency.uppercase()}")
                     }
                 }
 
                 IconButton(onClick = {onFavoriteClick()},
-                    modifier = Modifier.padding(end = 12.dp, bottom = 12.dp)
+                    modifier = Modifier
+                        .padding(end = 12.dp, bottom = 12.dp)
                         .align(Alignment.End),
                     shapes = IconButtonShapes(CircleShape),
                     border = BorderStroke(1.dp, Color.Gray)

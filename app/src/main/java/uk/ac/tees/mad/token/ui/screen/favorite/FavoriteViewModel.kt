@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import uk.ac.tees.mad.token.data.DataStoreManager
 import uk.ac.tees.mad.token.data.local.FavoriteEntity
 import uk.ac.tees.mad.token.data.repository.Repository
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
     private val repository: Repository,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val dataStoreManager: DataStoreManager
 ):ViewModel() {
 
     private val _favoriteDataList = MutableStateFlow<List<FavoriteEntity>>(emptyList())
@@ -24,13 +26,18 @@ class FavoriteViewModel @Inject constructor(
 
     private val userId = auth.currentUser?.uid?:""
 
-    private val currentCurrency = "usd"
+    private val _selectedCurrency = MutableStateFlow("usd")
+    val selectedCurrency:StateFlow<String> get() = _selectedCurrency
 
     init {
         viewModelScope.launch{
             repository.getFavoriteTokens(userId).collect {
                 _favoriteDataList.value = it
             }
+        }
+
+        viewModelScope.launch {
+            dataStoreManager.selectedCurrencyFlow.collect{_selectedCurrency.value = it}
         }
     }
 
@@ -43,12 +50,12 @@ class FavoriteViewModel @Inject constructor(
 
     fun updateFavorite(entity: FavoriteEntity, context: Context){
         viewModelScope.launch {
-            val newData = repository.getTokenDetails(entity.id)
+            val newData = repository.getTokenDetails(entity.id,_selectedCurrency.value)
             repository.updateFavoriteData(entity.copy(
-                currentPrice = newData.market_data.current_price[currentCurrency]?:0.0,
+                currentPrice = newData.market_data.current_price[_selectedCurrency.value]?:0.0,
                 priceChange = newData.market_data.price_change_percentage_24h,
-                marketCap = newData.market_data.market_cap[currentCurrency]?.toLong()?:0,
-                volume = newData.market_data.total_volume[currentCurrency]?.toLong()?:0
+                marketCap = newData.market_data.market_cap[_selectedCurrency.value]?.toLong()?:0,
+                volume = newData.market_data.total_volume[_selectedCurrency.value]?.toLong()?:0
             ))
             Toast.makeText(context, "Data updated", Toast.LENGTH_SHORT).show()
         }

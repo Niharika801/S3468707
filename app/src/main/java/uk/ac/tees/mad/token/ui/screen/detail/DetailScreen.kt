@@ -37,11 +37,11 @@ import uk.ac.tees.mad.token.presentation.components.ShimmerCryptoDetailCard
 
 @Composable
 fun DetailScreen(
-    id:String,
+    id: String,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val crypto by viewModel.tokenDetail.collectAsState()
-    val selectedCurrency by remember { mutableStateOf("usd") }
+    val selectedCurrency by viewModel.selectedCurrency.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getDetailData(id)
@@ -55,7 +55,7 @@ fun DetailScreen(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (crypto!=null){
+        if (crypto != null) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -84,17 +84,20 @@ fun DetailScreen(
                         color = Color.White
                     )
                     Text(
-                        text = "${crypto!!.market_data.current_price[selectedCurrency]?.let { price -> "$price $selectedCurrency".uppercase() }}",
+                        text = "${crypto!!.market_data.current_price[selectedCurrency]?.let 
+                        { price -> "$price $selectedCurrency".uppercase() }}",
                         fontSize = 20.sp,
                         color = Color(0xFFFFC107),
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "Market Cap: ${crypto!!.market_data.market_cap[selectedCurrency]?.let { cap -> "$cap $selectedCurrency".uppercase()}}",
+                        text = "Market Cap: ${crypto!!.market_data.market_cap[selectedCurrency]?.let 
+                        { cap -> "$cap $selectedCurrency".uppercase() }}",
                         color = Color(0xFFB0BEC5)
                     )
                     Text(
-                        text = "Volume: ${crypto!!.market_data.total_volume[selectedCurrency]?.let { cap -> "$cap $selectedCurrency".uppercase()}}",
+                        text = "Volume: ${crypto!!.market_data.total_volume[selectedCurrency]?.let 
+                        { cap -> "$cap $selectedCurrency".uppercase() }}",
                         color = Color(0xFFB0BEC5)
                     )
                     Text(
@@ -116,12 +119,22 @@ fun DetailScreen(
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = "Description", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    Text(
+                        text = "Description",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = crypto!!.description.en, maxLines = 5, overflow = TextOverflow.Ellipsis, color = Color.Gray)
+                    Text(
+                        text = crypto!!.description.en,
+                        maxLines = 5,
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.Gray
+                    )
                 }
             }
-        }else{
+        } else {
             ShimmerCryptoDetailCard()
             Spacer(modifier = Modifier.height(16.dp))
             ShimmerCryptoDescriptionCard()

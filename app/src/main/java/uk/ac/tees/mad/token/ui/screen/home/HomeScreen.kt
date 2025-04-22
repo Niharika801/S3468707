@@ -24,6 +24,7 @@ fun HomeScreen(
     navController: NavController
 ) {
     val cryptoList by viewModel.cryptoList.collectAsState()
+    val selectedCurrency by viewModel.selectedCurrency.collectAsState()
     val context = LocalContext.current
     Column(
         modifier = modifier
@@ -36,7 +37,7 @@ fun HomeScreen(
         )
         LazyColumn {
             items(cryptoList){ token->
-                TokenCard(token,
+                TokenCard(token, selectedCurrency,
                     onClick = {
                         navController.navigate(Screens.DetailScreen.route+ "/${token.id}")
                     },

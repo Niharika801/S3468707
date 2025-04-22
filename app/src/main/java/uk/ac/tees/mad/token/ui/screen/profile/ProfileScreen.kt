@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.token.ui.screen.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -66,7 +67,10 @@ fun ProfileScreen(
         
         CurrencySelector(
             currentCurrency = selectedCurrency,
-            onCurrencyChange = {viewModel.saveSelectedCurrency(it)}
+            onCurrencyChange = {
+                viewModel.saveSelectedCurrency(it)
+                Toast.makeText(context, "Currency changed, please reload data", Toast.LENGTH_SHORT).show()
+            }
         )
         
         SettingsOption(
