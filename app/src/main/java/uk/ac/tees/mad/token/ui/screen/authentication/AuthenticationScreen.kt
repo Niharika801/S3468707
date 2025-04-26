@@ -18,10 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,7 +28,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -55,9 +56,9 @@ fun AuthenticationScreen(
     val context = LocalContext.current
 
     LaunchedEffect(loginSuccess) {
-        if (loginSuccess){
-            navController.navigate(Screens.MainScreen.route){
-                popUpTo(Screens.AuthenticationScreen.route){
+        if (loginSuccess) {
+            navController.navigate(Screens.MainScreen.route) {
+                popUpTo(Screens.AuthenticationScreen.route) {
                     inclusive = true
                 }
             }
@@ -67,108 +68,116 @@ fun AuthenticationScreen(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         GradientBackground()
 
-        Card(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(16.dp),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 8.dp
-            )
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = if (isSignUp) "Sign Up" else "Login",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 16.dp)
+            Text("Welcome to Token",
+                color = Color.White,
+                style = MaterialTheme.typography.headlineLarge,
+                fontFamily = FontFamily.Serif
                 )
+            Spacer(Modifier.height(20.dp))
+            Text(
+                text = if (isSignUp) "Sign Up" else "Login",
+                fontSize = 24.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-                AnimatedVisibility(
-                    visible = isSignUp,
-                    enter = expandVertically(
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessLow
-                        )
-                    ),
-                    exit = shrinkVertically(
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessLow
-                        )
+            AnimatedVisibility(
+                visible = isSignUp,
+                enter = expandVertically(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
                     )
-                ) {
-                    OutlinedTextField(
-                        value = name,
-                        onValueChange = { viewModel.onNameChange(it)},
-                        label = { Text("Name") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                ),
+                exit = shrinkVertically(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
                     )
-                }
-
+                )
+            ) {
                 OutlinedTextField(
-                    value = email,
-                    onValueChange = {viewModel.onEmailChange(it)},
-                    label = { Text("Email") },
+                    value = name,
+                    onValueChange = { viewModel.onNameChange(it) },
+                    label = { Text("Name") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = Color.White.copy(alpha = 0.8f)
+                    ),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
+            }
 
-                Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = email,
+                onValueChange = { viewModel.onEmailChange(it) },
+                label = { Text("Email") },
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.8f)
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
 
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { viewModel.onPasswordChange(it)},
-                    label = { Text("Password") },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    visualTransformation = PasswordVisualTransformation()
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { viewModel.onPasswordChange(it) },
+                label = { Text("Password") },
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.8f)
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    viewModel.authenticate(context)
+                },
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = if (isSignUp) "Sign Up" else "Login")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = if (isSignUp) "Already have an account?" else "Don't have an account?",
+                    fontSize = 14.sp,
+                    color = Color.White
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    onClick = {
-                        viewModel.authenticate(context)
-                    },
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = if (isSignUp) "Sign Up" else "Login")
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = if (isSignUp) "Already have an account?" else "Don't have an account?",
-                        fontSize = 14.sp
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = if (isSignUp) "Log In" else "Sign Up",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .clickable { viewModel.onIsSignUpChange(!isSignUp) }
-                    )
-                }
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = if (isSignUp) "Log In" else "Sign Up",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .clickable { viewModel.onIsSignUpChange(!isSignUp) }
+                )
             }
         }
-        if (isLoading){
-            LoadingDialog()
-        }
+    }
+    if (isLoading) {
+        LoadingDialog()
     }
 }

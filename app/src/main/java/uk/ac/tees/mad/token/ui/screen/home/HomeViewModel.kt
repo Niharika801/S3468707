@@ -1,7 +1,6 @@
 package uk.ac.tees.mad.token.ui.screen.home
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,10 +36,11 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            dataStoreManager.selectedCurrencyFlow.collect{_selectedCurrency.value = it}
+            dataStoreManager.selectedCurrencyFlow.collect{
+                _selectedCurrency.value = it
+                _cryptoList.value = repository.getTokenData(_selectedCurrency.value)
+            }
         }
-        fetchCryptoData()
-        Log.e("Data Size", _cryptoList.value.size.toString())
     }
 
     private fun fetchCryptoData() {
